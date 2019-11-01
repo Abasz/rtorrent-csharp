@@ -16,7 +16,8 @@ namespace rTorrentLib
 
         public rTorrentRequest(List<TorrentCommand> torrentCommands, string ipAddress = "127.0.0.1", int port = 5000)
         {
-            if (torrentCommands.Count == 0) throw new NullReferenceException("XMLRPC command is missing");
+            if (torrentCommands.Count == 0)throw new NullReferenceException("XMLRPC command is missing");
+
             TorrentClient = new rTorrentClient(ipAddress, port);
             TorrentCommands = torrentCommands;
             CommandString = XmlRpcTorrentSerialize();
