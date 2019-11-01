@@ -10,8 +10,8 @@ namespace rTorrentLib.Services
 {
     public class rTorrentService : IrTorrentService
     {
-        readonly private string _ipAddress;
-        readonly private int _port;
+        private readonly string _ipAddress;
+        private readonly int _port;
 
         public rTorrentService(string ipAddress = "127.0.0.1", int port = 5000)
         {
@@ -22,8 +22,10 @@ namespace rTorrentLib.Services
 
         public Task<rTorrentResponse<IEnumerable<XElement>>> SendTorrentQueryAsync(List<TorrentCommand> commands) => SendQuery(commands, (e) => e);
 
-        private async Task<rTorrentResponse<T>> SendQuery<T>(List<TorrentCommand> commands, Func<IEnumerable<XElement>, T> parser) {
+        private async Task<rTorrentResponse<T>> SendQuery<T>(List<TorrentCommand> commands, Func<IEnumerable<XElement>, T> parser)
+        {
             var torrenCallCommand = new rTorrentRequest(commands, _ipAddress, _port);
+
             return await torrenCallCommand.SendCommand(parser);
         }
     }

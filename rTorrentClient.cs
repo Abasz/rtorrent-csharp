@@ -7,13 +7,13 @@ namespace rTorrentLib
 {
     public class rTorrentClient
     {
-        private readonly string IpAddress;
-        private readonly int Port;
+        private readonly string _ipAddress;
+        private readonly int _port;
 
         public rTorrentClient(string ipAddress = "127.0.0.1", int port = 5000)
         {
-            IpAddress = ipAddress;
-            Port = port;
+            _ipAddress = ipAddress;
+            _port = port;
         }
 
         public async Task<string> Connect(string xmlCommand)
@@ -21,7 +21,7 @@ namespace rTorrentLib
             string response;
             try
             {
-                using(var tcpClient = new TcpClient(IpAddress, Port))
+                using(var tcpClient = new TcpClient(_ipAddress, _port))
                 {
                     var networkStream = tcpClient.GetStream();
                     var streamWriter = new StreamWriter(networkStream);
@@ -62,7 +62,7 @@ namespace rTorrentLib
                                             <member>
                                             <name>faultString</name>
                                             <value>
-                                                <string>Connection refused at {IpAddress}:{Port} - Maybe rTorrent is down?</string>
+                                                <string>Connection refused at {_ipAddress}:{_port} - Maybe rTorrent is down?</string>
                                             </value>
                                             </member>
                                         </struct>
