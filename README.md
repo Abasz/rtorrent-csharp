@@ -20,6 +20,7 @@ or
 ```cs
 services.AddTransient<IrTorrentService>(sp => new rTorrentService("127.0.0.1", 5050));
 ```
+The above takes care of creating an rTorrentClient instance and can be injected in other services. The parameterless constructor creates the rTorrentClient instance on each request with a default ipAddress of 127.0.0.1 and a port of 5000. Default values maybe changed as parameters.
 
 Or a new instance maybe created directly:
 
@@ -27,12 +28,10 @@ Or a new instance maybe created directly:
 new rTorrentService(string ipAddress = "127.0.0.1", int port = 5000);
 ```
 
-The above takes care of creating an rTorrentClient instance and can be injected in other services. The parameterless constructor creates the rTorrentClient instance on each request with a default ipAddress of 127.0.0.1 and a port of 5000. De default values maybe changed as parameters.
-
-The commands may be sent with the SendTorrentQueryAsync method that takes a list of torrent commands and an optional parser function as constructor parameters.
+The commands may be sent with the SendTorrentQueryAsync method that takes a list of torrent commands and an optional parser function as constructor parameters. The method returns an rTorrentResponse object.
 
 ```cs
-SendTorrentQueryAsync<T>(List<TorrentCommand> commands, Func<IEnumerable<XElement>, T> parser);
+rTorrentResponse SendTorrentQueryAsync<T>(List<TorrentCommand> commands, Func<IEnumerable<XElement>, T> parser);
 ```
 
 Getting the names and hashes of all torrents as a multicall and parsing it to an object:
@@ -55,8 +54,8 @@ var response = await _torrentService.SendTorrentQueryAsync(dMulticall, responseX
         .Descendants("data")
         .Select(item =>
         new TorrentDetails {
-            Name = item[0],
-            Hash = item[1]
+            Name = item[0].Value,
+            Hash = item[1].Value
         }));
 ```
 
