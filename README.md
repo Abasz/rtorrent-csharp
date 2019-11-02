@@ -47,16 +47,16 @@ var dMulticall = new List<TorrentCommand>()
     };
 
 var response = await _torrentService.SendTorrentQueryAsync(dMulticall, responseXml =>
-        responseXml
-        .ElementAt(0)
-        .Descendants("data")
-        .ElementAt(0)
-        .Descendants("data")
-        .Select(item =>
-        new TorrentDetails {
-            Name = item.ElementAt(0).Value,
-            Hash = item.ElementAt(1).Value
-        }));
+    responseXml
+    .ElementAt(0)
+    .Descendants("data")
+    .ElementAt(0)
+    .Descendants("data")
+    .Select(item =>
+    new TorrentDetails {
+        Name = item.ElementAt(0).Value,
+        Hash = item.ElementAt(1).Value
+    }));
 ```
 
 #### Command types
