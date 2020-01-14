@@ -145,11 +145,11 @@ The response object has the following properties:
 ```cs
   public class rTorrentResponse<T>
     {
-        public T Body { get; private set; }
+        public T? Body { get; private set; }
         public int Status { get; private set; }
-        public string ContentType { get; private set; }
-        public long ContentLength { get; private set; }
-        public string ErrorMessage { get; private set; }
+        public string? ContentType { get; private set; }
+        public long? ContentLength { get; private set; }
+        public string? ErrorMessage { get; private set; }
     }
 ```
 If the call to the rTorrent XMLRPC is successful the ErrorMessage property will be null while the Body property will be either the return type of the parser function or IEnumerable<XElement> (if no parser function is provided).
