@@ -24,8 +24,10 @@ namespace rTorrentLib
                 using(var tcpClient = new TcpClient(_ipAddress, _port))
                 {
                     var networkStream = tcpClient.GetStream();
-                    var streamWriter = new StreamWriter(networkStream);
-                    streamWriter.AutoFlush = true;
+                    var streamWriter = new StreamWriter(networkStream)
+                    {
+                        AutoFlush = true
+                    };
                     var streamReader = new StreamReader(networkStream);
 
                     var header = $"CONTENT_LENGTH{'\0'}{Encoding.ASCII.GetBytes(xmlCommand).Length}{'\0'}SCGI{'\0'}1{'\0'}UNTRUSTED_CONNECTION{'\0'}1";

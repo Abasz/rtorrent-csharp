@@ -11,7 +11,7 @@ namespace rTorrentLib
     public class rTorrentResponse<T>
     {
         [MaybeNull]
-        public T Body { get; } = default(T) !;
+        public T Body { get; } = default !;
         public int Status { get; }
         public string? ContentType { get; }
         public long? ContentLength { get; }
