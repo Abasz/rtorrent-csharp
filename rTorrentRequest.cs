@@ -43,22 +43,13 @@ namespace rTorrentLib
 
                 foreach (var param in command.Parameters)
                 {
-                    str.Append($"<value><{GetParameterType(param)}>{param}</{GetParameterType(param)}></value>");
+                    str.Append($"<value><{param.Type}>{param.Parameter}</{param.Type}></value>");
                 }
                 str.Append("</data></array></value></member></struct></value>");
             }
             str.Append($"</data></array></value></param>");
             str.Append("</params></methodCall>");
             return str.ToString();
-        }
-
-        protected static string GetParameterType(object parameter)
-        {
-            if ((parameter is long))
-                return "i4";
-            if (parameter is float)
-                return "i8";
-            return "string";
         }
     }
 }

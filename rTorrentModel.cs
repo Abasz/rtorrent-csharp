@@ -1,17 +1,44 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace rTorrentLib.Model
 {
     public class TorrentCommand
     {
         public string Command { get; }
-        public string[] Parameters { get; }
+        public List<TorrentParams> Parameters { get; }
 
         public TorrentCommand(string command, params string[] parameters)
         {
             Command = command;
+            Parameters = parameters.Select(param => new TorrentParams(param)).ToList();
+        }
+
+        public TorrentCommand(string command, List<TorrentParams> parameters)
+        {
+            Command = command;
             Parameters = parameters;
         }
+    }
+
+    public class TorrentParams
+    {
+        public object Parameter { get; } = null!;
+        public string Type { get; }
+
+        public TorrentParams(object parameter, string? type = null)
+        {
+            Type = type
+            switch
+            {
+            null when parameter is int || parameter is long => "i4",
+            null when parameter is double || parameter is float => "i8",
+            null => "string",
+            _ => type,
+            };
+            Parameter = parameter;
+        }
+
     }
 
     public class TorrentDMultiCallCommand : TorrentCommand
