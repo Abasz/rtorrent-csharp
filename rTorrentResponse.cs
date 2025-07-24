@@ -31,7 +31,23 @@ namespace rTorrentLib
 
         public rTorrentResponse(string response, Func<IEnumerable<XElement>, T> parser)
         {
+            if (string.IsNullOrEmpty(response))
+            {
+                Status = 503;
+                ErrorMessage = "Empty response received from rTorrent - server may be down or rejecting the request";
+                return;
+            }
+
             var responseLines = Split(response, $"[{Environment.NewLine}]+");
+
+            // Check if we have enough lines for headers
+            if (responseLines.Length < 3)
+            {
+                Status = 503;
+                ErrorMessage = $"Invalid response format - expected headers but got: {response}";
+                return;
+            }
+
             Status = int.Parse(responseLines[0].Split(@" ".ToCharArray())[1]);
             ContentType = Split(responseLines[1], @": ")[1].Trim();
             ContentLength = long.Parse(Split(responseLines[2], @": ")[1]);
