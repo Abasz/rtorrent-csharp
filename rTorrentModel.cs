@@ -31,10 +31,10 @@ namespace rTorrentLib.Model
             Type = type
             switch
             {
-            null when parameter is int || parameter is long => "i4",
-            null when parameter is double || parameter is float => "i8",
-            null => "string",
-            _ => type,
+                null when parameter is int || parameter is long => "i4",
+                null when parameter is double || parameter is float => "i8",
+                null => "string",
+                _ => type,
             };
             Parameter = parameter;
         }
@@ -45,11 +45,11 @@ namespace rTorrentLib.Model
     {
         public string View { get; }
 
-        public TorrentDMultiCallCommand(string view = "main", params string[] parameters):
+        public TorrentDMultiCallCommand(string view = "main", params string[] parameters) :
             base("d.multicall2", AddParameters(view, parameters))
-            {
-                View = view;
-            }
+        {
+            View = view;
+        }
 
         private static string[] AddParameters(string view, string[] parameters)
         {
@@ -64,11 +64,11 @@ namespace rTorrentLib.Model
     public class TorrentFMultiCallCommand : TorrentCommand
     {
         public string Hash { get; }
-        public TorrentFMultiCallCommand(string hash, params string[] parameters):
+        public TorrentFMultiCallCommand(string hash, params string[] parameters) :
             base("f.multicall", AddParameters(hash, parameters))
-            {
-                Hash = hash;
-            }
+        {
+            Hash = hash;
+        }
 
         private static string[] AddParameters(string hash, string[] parameters)
         {

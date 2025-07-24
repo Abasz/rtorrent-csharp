@@ -8,7 +8,6 @@ Parsing the command objects to the appropriate XMLRPC format is taken care of au
 
 In the [rTorrent Handbook](https://rtorrent-docs.readthedocs.io/en/latest/) one may find the community maintained comprehensive manual and user guide for the rTorrent XMLRPC interface with detailed command reference.
 
-
 ## General usage
 
 There is a service wrapper that maybe used with dependency injection e.g. like below:
@@ -16,10 +15,13 @@ There is a service wrapper that maybe used with dependency injection e.g. like b
 ```cs
 services.AddTransient<IrTorrentService, rTorrentService>();
 ```
+
 or
+
 ```cs
 services.AddTransient<IrTorrentService>(sp => new rTorrentService("127.0.0.1", 5050));
 ```
+
 The above takes care of creating an rTorrentService instance and can be injected in other services. The parameterless constructor creates the instance on each request with a default ipAddress of 127.0.0.1 and a port of 5000.
 
 Or a new instance maybe created directly:
@@ -62,11 +64,13 @@ var response = await _torrentService.SendTorrentQueryAsync(dMulticall, responseX
 #### Command types
 
 - General commands
+
 ```cs
 new TorrentCommand(string command, params string[] parameters);
 ```
 
 Example usage (getting global throttle rates):
+
 ```cs
 var commandList = new List<TorrentCommand>()
 {
@@ -89,12 +93,15 @@ var response = await _torrentService.SendTorrentQueryAsync(commandList,
 ```
 
 - d.multicall
+
 ```cs
 TorrentDMultiCallCommand(string view = "main", params string[] parameters):
 ```
+
 Please see above example usage.
 
 - f.multicall
+
 ```cs
 TorrentFMultiCallCommand(string hash, params string[] parameters):
 ```
@@ -152,6 +159,7 @@ The response object has the following properties:
         public string? ErrorMessage { get; private set; }
     }
 ```
+
 If the call to the rTorrent XMLRPC is successful the ErrorMessage property will be null while the Body property will be either the return type of the parser function or IEnumerable<XElement> (if no parser function is provided).
 
 Status code will be 200 if call is successful.
@@ -160,7 +168,7 @@ In case of failure the status code and the error message will be what is returne
 
 #### TODO
 
--   Implement more multicall helper objects (although other multicalls maybe made via general TorrentCommand object with setting the appropriate parameters in the right order)
+- Implement more multicall helper objects (although other multicalls maybe made via general TorrentCommand object with setting the appropriate parameters in the right order)
 
 ## Disclaimer
 

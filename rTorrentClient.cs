@@ -20,20 +20,18 @@ namespace rTorrentLib
         {
             try
             {
-                using(var tcpClient = new TcpClient(_ipAddress, _port))
-                {
-                    var networkStream = tcpClient.GetStream();
-                    var streamReader = new StreamReader(networkStream);
+                using var tcpClient = new TcpClient(_ipAddress, _port);
+                var networkStream = tcpClient.GetStream();
+                var streamReader = new StreamReader(networkStream);
 
-                    var header = $"CONTENT_LENGTH\0{Encoding.UTF8.GetBytes(xmlCommand).Length}\0CONTENT_TYPE\0text/xml\0SCGI\01\0UNTRUSTED_CONNECTION\01\0";
+                var header = $"CONTENT_LENGTH\0{Encoding.UTF8.GetBytes(xmlCommand).Length}\0CONTENT_TYPE\0text/xml\0SCGI\01\0UNTRUSTED_CONNECTION\01\0";
 
-                    var request = $"{Encoding.UTF8.GetBytes(header).Length}:{header},{xmlCommand}";
-                    var requestBytes = Encoding.UTF8.GetBytes(request);
+                var request = $"{Encoding.UTF8.GetBytes(header).Length}:{header},{xmlCommand}";
+                var requestBytes = Encoding.UTF8.GetBytes(request);
 
-                    await networkStream.WriteAsync(requestBytes, 0, requestBytes.Length);
+                await networkStream.WriteAsync(requestBytes, 0, requestBytes.Length);
 
-                    return await streamReader.ReadToEndAsync();
-                }
+                return await streamReader.ReadToEndAsync();
             }
             catch
             {
