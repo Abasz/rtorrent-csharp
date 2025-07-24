@@ -24,9 +24,9 @@ namespace rTorrentLib.Services
 
         private async Task<rTorrentResponse<T>> SendQuery<T>(List<TorrentCommand> commands, Func<IEnumerable<XElement>, T> parser)
         {
-            var torrenCallCommand = new rTorrentRequest(commands, _ipAddress, _port);
+            var torrentCallCommand = new rTorrentRequest(commands, _ipAddress, _port);
 
-            return await torrenCallCommand.SendCommand(parser);
+            return await torrentCallCommand.SendCommand(parser);
         }
     }
 }
