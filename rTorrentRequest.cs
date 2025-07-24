@@ -34,7 +34,7 @@ namespace rTorrentLib
         {
             var str = new StringBuilder();
 
-            str.Append($"<?xml version='1.0' encoding='iso-8859-1'?><methodCall><methodName>");
+            str.Append($"<?xml version='1.0' encoding='UTF-8'?><methodCall><methodName>");
 
             str.Append($"system.multicall</methodName><params><param><value><array><data>");
             foreach (var command in TorrentCommands)

@@ -18,28 +18,22 @@ namespace rTorrentLib
 
         public async Task<string> Connect(string xmlCommand)
         {
-            string response;
             try
             {
                 using(var tcpClient = new TcpClient(_ipAddress, _port))
                 {
                     var networkStream = tcpClient.GetStream();
-                    var streamWriter = new StreamWriter(networkStream)
-                    {
-                        AutoFlush = true
-                    };
                     var streamReader = new StreamReader(networkStream);
 
-                    var header = $"CONTENT_LENGTH{'\0'}{Encoding.ASCII.GetBytes(xmlCommand).Length}{'\0'}SCGI{'\0'}1{'\0'}UNTRUSTED_CONNECTION{'\0'}1";
+                    var header = $"CONTENT_LENGTH\0{Encoding.UTF8.GetBytes(xmlCommand).Length}\0CONTENT_TYPE\0text/xml\0SCGI\01\0UNTRUSTED_CONNECTION\01\0";
 
-                    await streamWriter.WriteAsync($"{header.Length}:{header},{xmlCommand}");
+                    var request = $"{Encoding.UTF8.GetBytes(header).Length}:{header},{xmlCommand}";
+                    var requestBytes = Encoding.UTF8.GetBytes(request);
 
-                    response = await streamReader.ReadToEndAsync();
+                    await networkStream.WriteAsync(requestBytes, 0, requestBytes.Length);
 
-                    streamWriter.Close();
-                    tcpClient.Close();
-                    return response;
-                };
+                    return await streamReader.ReadToEndAsync();
+                }
             }
             catch
             {
