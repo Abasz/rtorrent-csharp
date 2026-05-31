@@ -50,7 +50,7 @@ namespace rTorrentLib
             ContentLength = long.Parse(Split(responseLines[2], @": ")[1]);
 
             var xmlDoc = XElement.Parse(Replace(response, "Status.*|Content-Type.*|Content-Length.*|", "").Trim());
-            if (xmlDoc.XPathSelectElements("//struct").Count() > 0)
+            if (xmlDoc.XPathSelectElement("//struct/member[name='faultCode']") is not null)
             {
                 var members = xmlDoc.XPathSelectElements("//member/value").ToList();
                 Status = Math.Abs(Convert.ToInt16(members[0].Value));
