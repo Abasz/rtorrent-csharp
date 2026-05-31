@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/rTorrent.ClassLibrary/rTorrent.ClassLibrary.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/rTorrent.Tests/rTorrent.Tests.csproj" />
+  </Folder>
+</Solution>
