@@ -22,10 +22,7 @@ namespace rTorrentLib
                 var networkStream = tcpClient.GetStream();
                 var streamReader = new StreamReader(networkStream);
 
-                var header = $"CONTENT_LENGTH\0{Encoding.UTF8.GetBytes(xmlCommand).Length}\0CONTENT_TYPE\0text/xml\0SCGI\01\0";
-
-                var request = $"{Encoding.UTF8.GetBytes(header).Length}:{header},{xmlCommand}";
-                var requestBytes = Encoding.UTF8.GetBytes(request);
+                var requestBytes = BuildScgiRequest(xmlCommand);
 
                 await networkStream.WriteAsync(requestBytes, 0, requestBytes.Length);
 
@@ -66,6 +63,14 @@ namespace rTorrentLib
                     </params>
                 </methodResponse>";
             }
+        }
+
+        internal static byte[] BuildScgiRequest(string xmlCommand)
+        {
+            var bodyBytes = Encoding.UTF8.GetBytes(xmlCommand);
+            var header = $"CONTENT_LENGTH\0{bodyBytes.Length}\0CONTENT_TYPE\0text/xml\0SCGI\01\0";
+            var request = $"{Encoding.UTF8.GetBytes(header).Length}:{header},{xmlCommand}";
+            return Encoding.UTF8.GetBytes(request);
         }
     }
 }
